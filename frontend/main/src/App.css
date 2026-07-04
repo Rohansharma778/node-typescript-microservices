@@ -1,0 +1,52 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #fdfdfd;
+}
+.main-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #343a40;
+  color: #fff;
+  padding: 10px 20px;
+}
+.brand { font-size: 1.2rem; font-weight: bold; }
+.search-bar input {
+  width: 500px;
+  padding: 6px;
+  background-color: #495057;
+  border: none;
+  border-radius: 4px;
+  color: white;
+}
+.storefront-content { padding: 40px; }
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+}
+.product-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.image-wrapper img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+.card-footer { padding: 15px; }
+.card-footer h3 { margin: 0 0 15px 0; font-size: 1.1rem; font-weight: normal; }
+.action-row { display: flex; justify-content: space-between; align-items: center; }
+.btn-like {
+  background: white;
+  border: 1px solid #ced4da;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.likes-text { color: #6c757d; font-size: 0.9rem; }

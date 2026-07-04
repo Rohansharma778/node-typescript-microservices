@@ -1,0 +1,52 @@
+services:
+  # 1. Admin Microservice
+  admin_service:
+    build:
+      context: ./admin
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql_db
+      - rabbitmq
+    environment:
+      - TYPEORM_HOST=mysql_db
+      - TYPEORM_USERNAME=root
+      - TYPEORM_PASSWORD=rootroot
+      - TYPEORM_DATABASE=yt_node_admin
+      - RABBITMQ_URL=amqp://rabbitmq
+
+  # 2. Main Microservice
+  main_service:
+    build:
+      context: ./main
+    ports:
+      - "8001:8001"
+    depends_on:
+      - mongo_db
+      - rabbitmq
+    environment:
+      - TYPEORM_HOST=mongo_db
+      - TYPEORM_DATABASE=yt_node_main
+      - RABBITMQ_URL=amqp://rabbitmq
+
+  # 3. MySQL Database (Admin)
+  mysql_db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: rootroot
+      MYSQL_DATABASE: yt_node_admin
+    ports:
+      - "3306:3306"
+
+  # 4. MongoDB Database (Main)
+  mongo_db:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+
+  # 5. RabbitMQ Broker
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"

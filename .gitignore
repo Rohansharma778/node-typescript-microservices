@@ -1,0 +1,19 @@
+# Dependency directories
+node_modules/
+admin/node_modules/
+main/node_modules/
+frontend/node_modules/
+
+# Build and compilation outputs
+dist/
+build/
+*.js.map
+
+# IDEs and system files
+.DS_Store
+.idea/
+.vscode/
+
+# Local environment variables
+.env
+.env.local

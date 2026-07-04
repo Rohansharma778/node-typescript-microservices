@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "es2022",
+      "dom"
+    ],
+    "target": "es2022",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "ignoreDeprecations": "6.0"
+  }
+}
