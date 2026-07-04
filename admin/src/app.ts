@@ -28,6 +28,20 @@ createConnection({
     //     if (error0) { 
     //         throw error0; 
     //     } 
+    let amqpOptions = {};
+
+    if (process.env.RABBITMQ_URL && process.env.RABBITMQ_URL.startsWith("amqps")) {
+    try {
+        // Dynamically extract the hostname to satisfy strict SNI routing rules
+        const brokerHostname = new URL(process.env.RABBITMQ_URL).hostname;
+        amqpOptions = {
+            servername: brokerHostname,
+            rejectUnauthorized: false // Bypasses strict authority certificate drops
+        };
+    } catch (err) {
+        console.error("Failed to parse RABBITMQ_URL:", err);
+    }
+    }
     amqp.connect(process.env.RABBITMQ_URL || "amqp://localhost", function (error0, connection) {
         if (error0) {
             console.error("RabbitMQ Connection Error Details:", error0);
