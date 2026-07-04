@@ -13,7 +13,11 @@ createConnection({
     username: process.env.TYPEORM_USERNAME || "root",
     password: process.env.TYPEORM_PASSWORD || "rootroot",
     database: process.env.TYPEORM_DATABASE || "yt_node_admin",
-    entities: [Product],
+    // Encrypt traffic when running on a remote cloud host (TiDB requirement)
+    ssl: process.env.TYPEORM_HOST ? { rejectUnauthorized: true } : false,
+    entities: [
+        // Keep your existing entity declarations right here
+    ],
     synchronize: true,
     logging: false
 }).then(db => { 
