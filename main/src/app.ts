@@ -118,6 +118,6 @@ createConnection({
                 console.log('closing'); 
                 connection.close(); 
             }); 
+            
         }); 
     }); 
-});
