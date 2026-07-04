@@ -24,10 +24,15 @@ createConnection({
 }).then(db => { 
     const productRepository = db.getRepository(Product); 
     
-    amqp.connect(process.env.RABBITMQ_URL || 'amqp://localhost', (error0, connection) => { 
-        if (error0) { 
-            throw error0; 
-        } 
+    // amqp.connect(process.env.RABBITMQ_URL || 'amqp://localhost', (error0, connection) => { 
+    //     if (error0) { 
+    //         throw error0; 
+    //     } 
+    amqp.connect(process.env.RABBITMQ_URL || "amqp://localhost", function (error0, connection) {
+        if (error0) {
+            console.error("RabbitMQ Connection Error Details:", error0);
+            throw error0;
+        }
         connection.createChannel((error1, channel) => { 
             if (error1) { 
                 throw error1; 
@@ -36,6 +41,7 @@ createConnection({
             app.use(cors({ 
                 origin: ['http://localhost:3000', 'http://localhost:8080', 'http://localhost:4200'] 
             })); 
+
             app.use(express.json()); 
 
             app.get('/api/products', async (req: Request, res: Response) => { 
