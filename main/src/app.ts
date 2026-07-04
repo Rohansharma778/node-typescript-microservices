@@ -1,6 +1,5 @@
-import * as express from 'express';
-import { Request, Response } from 'express';
-import * as cors from 'cors';
+import express = require('express');
+import cors = require('cors');
 import { createConnection } from 'typeorm';
 import * as amqp from 'amqplib/callback_api';
 import { Product } from "./entity/product";
@@ -93,15 +92,14 @@ createConnection({
                 }
             }, { noAck: true });
 
-            app.get('/api/products', async (req: Request, res: Response) => {
+            app.get('/api/products', async (req: express.Request, res: express.Response) => {
                 const products = await productRepository.find();
                 return res.send(products);
             });
 
-            app.post('/api/products/:id/like', async (req: Request, res: Response) => {
+            app.post('/api/products/:id/like', async (req: express.Request, res: express.Response) => {
                 const product = await productRepository.findOne(req.params.id);
                 if (product) {
-                    // Falls back to admin microservice on Render if specified
                     const adminUrl = process.env.ADMIN_BACKEND_URL || "http://localhost:8000";
                     await axios.post(`${adminUrl}/api/products/${product.admin_id}/like`, {});
                     product.likes++;
@@ -116,4 +114,4 @@ createConnection({
             });
         });
     });
-});
+}); 
