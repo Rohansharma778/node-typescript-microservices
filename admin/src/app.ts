@@ -16,6 +16,7 @@ createConnection({
     // Encrypt traffic when running on a remote cloud host (TiDB requirement)
     ssl: process.env.TYPEORM_HOST ? { rejectUnauthorized: true } : false,
     entities: [
+        Product
         // Keep your existing entity declarations right here
     ],
     synchronize: true,
