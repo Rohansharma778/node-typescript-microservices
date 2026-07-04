@@ -9,21 +9,42 @@ import axios from 'axios';
 // Detect if we are using a cloud MongoDB Atlas connection string string
 const isCloudMongo = process.env.TYPEORM_HOST && process.env.TYPEORM_HOST.startsWith('mongodb');
 
+import { createConnection } from "typeorm";
+import { Product } from "./entity/product"; // Ensure your Product entity import is correct
+import * as amqp from "amqplib/callback_api";
 createConnection({
     type: "mongodb",
-    url: isCloudMongo ? process.env.TYPEORM_HOST : undefined,
-    host: isCloudMongo ? undefined : (process.env.TYPEORM_HOST || "localhost"),
-    port: isCloudMongo ? undefined : 27017,
-    database: process.env.TYPEORM_DATABASE || "yt_node_main",
+    // If a cloud URL is provided, TypeORM will use it and ignore host/port parameters
+    url: process.env.MONGO_URL || undefined,
+    host: process.env.MONGO_URL ? undefined : "localhost",
+    port: process.env.MONGO_URL ? undefined : 27017,
+    database: "yt_node_main",
     useUnifiedTopology: true,
-    entities: [Product],
     synchronize: true,
-    logging: false
-}).then(db => { 
-    const productRepository = db.getMongoRepository(Product); 
-    
+    logging: false,
+    entities: [
+        Product
+    ]
+}).then(db => {
+    Product
+    // Your existing express setup...
+});
+
+    if (process.env.RABBITMQ_URL && process.env.RABBITMQ_URL.startsWith("amqps")) {
+    try {
+        // Dynamically extract the hostname to satisfy strict SNI routing rules
+        const brokerHostname = new URL(process.env.RABBITMQ_URL).hostname;
+        amqpOptions = {
+            servername: brokerHostname,
+            rejectUnauthorized: false // Bypasses strict authority certificate drops
+        };
+    } catch (err) {
+        console.error("Failed to parse RABBITMQ_URL:", err);
+    }
+    }
     amqp.connect(process.env.RABBITMQ_URL || 'amqp://localhost', (error0, connection) => { 
         if (error0) { 
+            console.error("RabbitMQ Connection Error Details:", error0);
             throw error0; 
         } 
         connection.createChannel((error1, channel) => { 
